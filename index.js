@@ -1,6 +1,5 @@
 console.log("Connected");
 
-let turn = true;
 let cross = "X";
 let zero = "O";
 const winningCombo = [
@@ -14,14 +13,20 @@ const winningCombo = [
   [3, 5, 7],
 ];
 
+let turn;
+let boxes;
+
+startGame();
+
+function startGame() {
+  turn = true;
+  boxes = document.getElementsByClassName("box");
+  Array.from(boxes).forEach((box) => {
+    box.addEventListener("click", handleClick,{once: true});
+  });
+}
+
 // By default player 1 starts the game when turn is true
-
-let boxes = document.getElementsByClassName("box");
-
-Array.from(boxes).forEach((box) => {
-  box.addEventListener("click", handleClick,{once: true});
-});
-
 function handleClick(e) {
   //for player1
   if (turn) {
@@ -75,21 +80,26 @@ function drawCheck() {
 }
 
 function showResult(text) {
-  document.querySelector(
-    ".show-winner"
-  ).innerText = text;
+  document.querySelector(".show-winner").innerText = text;
+  resetBtn.disabled = true;
   setTimeout(() => {
     endGame();
   }, 10000);
 }
 
+// adding event listener to the reset button
+let resetBtn = document.getElementById("reset");
+resetBtn.addEventListener("click", endGame);
+
 function endGame() {
   Array.from(boxes).forEach((box) => {
     box.classList.remove("Player-1","Player-2");
     box.innerText = "";
+    box.removeEventListener('click',handleClick);
   });
   document.querySelector(".show-winner").innerText = "";
+  resetBtn.disabled = false;
+  startGame();
 }
 
-// adding event listener to the reset button
-document.getElementById("reset").addEventListener("click", endGame);
+
