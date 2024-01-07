@@ -3,6 +3,8 @@ console.log("Connected");
 let turn = true;
 let cross = "X";
 let zero = "O";
+let totalTurn = 0;
+let winPossible = false;
 const winningCombo = [
   [1, 2, 3],
   [4, 5, 6],
@@ -11,7 +13,7 @@ const winningCombo = [
   [2, 5, 8],
   [3, 6, 9],
   [1, 5, 9],
-  [3, 5, 8],
+  [3, 5, 7],
 ];
 
 // By default player 1 starts the game when turn is true
@@ -36,8 +38,17 @@ function handleClick(e) {
     checkWinningStatus("Player-2");
   }
   turn = !turn;
+  totalTurn++;
   // e.target.classList.remove("box");
   // e.target.removeEventListener("click", handleClick);
+  if(!winPossible && totalTurn===9){
+    document.querySelector(
+      ".show-winner"
+    ).innerText = `$Its a Draw. Game will restart in 10s`;
+    setTimeout(() => {
+      endGame();
+    }, 10000);
+  }
 }
 
 function checkWinningStatus(player) {
@@ -55,6 +66,7 @@ function checkWinningStatus(player) {
       }
     });
     if (flag) {
+      winPossible = true;
       showWinner(player);
     }
   });
