@@ -3,8 +3,6 @@ console.log("Connected");
 let turn = true;
 let cross = "X";
 let zero = "O";
-let totalTurn = 0;
-let winPossible = false;
 const winningCombo = [
   [1, 2, 3],
   [4, 5, 6],
@@ -38,17 +36,7 @@ function handleClick(e) {
     checkWinningStatus("Player-2");
   }
   turn = !turn;
-  totalTurn++;
-  // e.target.classList.remove("box");
-  // e.target.removeEventListener("click", handleClick);
-  if(!winPossible && totalTurn===9){
-    document.querySelector(
-      ".show-winner"
-    ).innerText = `$Its a Draw. Game will restart in 10s`;
-    setTimeout(() => {
-      endGame();
-    }, 10000);
-  }
+  drawCheck();
 }
 
 function checkWinningStatus(player) {
@@ -66,16 +54,31 @@ function checkWinningStatus(player) {
       }
     });
     if (flag) {
-      winPossible = true;
-      showWinner(player);
+      showResult(`${player} has won. Game will restart in 10s`);
     }
   });
 }
 
-function showWinner(player) {
+function drawCheck() {
+  let boxes = document.querySelectorAll('.box');
+  let flag = true;
+  let arr = Array.from(boxes);
+  for(let elem of arr) {
+    if(!elem.classList.contains('Player-1') && !elem.classList.contains('Player-2')){
+      console.log(elem);
+      flag = false
+      break;
+    }
+  }
+  if(flag){
+    showResult('Its a draw. Game will restart in 10s');
+  }
+}
+
+function showResult(text) {
   document.querySelector(
     ".show-winner"
-  ).innerText = `${player} has won. Game will restart in 10s`;
+  ).innerText = text;
   setTimeout(() => {
     endGame();
   }, 10000);
