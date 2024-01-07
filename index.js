@@ -19,7 +19,7 @@ const winningCombo = [
 let boxes = document.getElementsByClassName("box");
 
 Array.from(boxes).forEach((box) => {
-  box.addEventListener("click", handleClick);
+  box.addEventListener("click", handleClick,{once: true});
 });
 
 function handleClick(e) {
@@ -36,8 +36,8 @@ function handleClick(e) {
     checkWinningStatus("Player-2");
   }
   turn = !turn;
-  e.target.classList.remove("box");
-  e.target.removeEventListener("click", handleClick);
+  // e.target.classList.remove("box");
+  // e.target.removeEventListener("click", handleClick);
 }
 
 function checkWinningStatus(player) {
