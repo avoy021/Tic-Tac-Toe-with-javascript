@@ -65,7 +65,6 @@ function drawCheck() {
   let arr = Array.from(boxes);
   for(let elem of arr) {
     if(!elem.classList.contains('Player-1') && !elem.classList.contains('Player-2')){
-      console.log(elem);
       flag = false
       break;
     }
@@ -85,7 +84,11 @@ function showResult(text) {
 }
 
 function endGame() {
-  location.reload();
+  Array.from(boxes).forEach((box) => {
+    box.classList.remove("Player-1","Player-2");
+    box.innerText = "";
+  });
+  document.querySelector(".show-winner").innerText = "";
 }
 
 // adding event listener to the reset button
